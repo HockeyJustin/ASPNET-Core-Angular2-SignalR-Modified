@@ -2,7 +2,7 @@
 
 ## This is a modified clone of https://github.com/FabianGosebrink/ASPNETCore-Angular-SignalR-Typescript using, ASP.NET Core, SignalR and Angular with Typescript.
 
-### If you are starting from scratch, that sample is much cleaner/tidier than this one :).
+### If you are starting from scratch, the [original](https://github.com/FabianGosebrink/ASPNETCore-Angular-SignalR-Typescript) is much cleaner/tidier than this one :).
 
 
 ## Code
