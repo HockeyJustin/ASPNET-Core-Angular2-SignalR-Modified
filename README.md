@@ -5,7 +5,8 @@
 ### If you are starting from scratch, the [original](https://github.com/FabianGosebrink/ASPNETCore-Angular-SignalR-Typescript) is much cleaner/tidier than this one :).
 
 
-## Code (Details copied from [original repository](https://github.com/FabianGosebrink/ASPNETCore-Angular-SignalR-Typescript))
+## Code 
+(Details copied from [original repository](https://github.com/FabianGosebrink/ASPNETCore-Angular-SignalR-Typescript))
 
 Clone this repo and run 
 
