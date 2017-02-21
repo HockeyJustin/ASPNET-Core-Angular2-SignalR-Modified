@@ -1,4 +1,3 @@
-# Testing
 
 ### This is a modified clone of https://github.com/FabianGosebrink/ASPNETCore-Angular-SignalR-Typescript
 
