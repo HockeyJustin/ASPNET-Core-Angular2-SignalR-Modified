@@ -47,18 +47,5 @@ namespace ASPNETCoreAngular2Demo.Repositories
 				thisSignature.UniqueStamp = "";
 			}
 		}
-
-
-		//private static RegDeskSignatureRepository _instance;
-		//public static RegDeskSignatureRepository Instance()
-		//{
-		//	if (_instance == null)
-		//	{
-		//		_instance = new RegDeskSignatureRepository();
-		//	}
-		//	return _instance;
-		//}
-
-
 	}
 }

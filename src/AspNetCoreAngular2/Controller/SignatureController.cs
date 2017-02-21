@@ -62,7 +62,7 @@ namespace ASPNETCoreAngular2Demo.Controller
 
 
 		[HttpPost]
-		public IActionResult StartSignature([FromBody] SignatureScreenDetail signatureDetail)
+		public IActionResult StartSignature([FromBody] SignatureRequestDetail signatureDetail)
 		{
 
 			if (signatureDetail == null || String.IsNullOrWhiteSpace(signatureDetail.RdUserName))

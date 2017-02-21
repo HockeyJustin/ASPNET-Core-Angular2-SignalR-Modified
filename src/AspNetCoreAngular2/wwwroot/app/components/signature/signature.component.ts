@@ -4,7 +4,7 @@ import { RD } from '../../models/RD';
 import { RDSignature } from '../../models/RDSignature';
 import { Guid } from '../../models/Guid';
 import { SignaturePadComponent } from '../../components/signature-pad/signaturepad.component';
-import { SignatureScreenDetail } from '../../models/SignatureScreenDetail';
+import { SignatureRequestDetail } from '../../models/SignatureRequestDetail';
 
 @Component({
 	selector: 'signature',
@@ -15,16 +15,13 @@ import { SignatureScreenDetail } from '../../models/SignatureScreenDetail';
 export class SignatureComponent {
 
 	public rd: RD;
-
+	public signatureRequest: SignatureRequestDetail;
 
 	public canSendMessage: Boolean;
 	private isRegistered: Boolean;
 	private isSignatureCaptureStarted: Boolean;
 	public signature: string;
-	public uniqueStampForSignatureRequest: string;
 
-	private forname: string;
-	private surname: string;
 
 
 	@ViewChild(SignaturePadComponent)
@@ -61,7 +58,7 @@ export class SignatureComponent {
 
 	public saveSignature() {
 		if (this.canSendMessage && this.isSignatureCaptureStarted) {
-			var rdSig = new RDSignature(this.rd.RDUserName, this.rd.SignalRClientId, this.rd.StaticClientGuid, this.signature, this.uniqueStampForSignatureRequest);
+			var rdSig = new RDSignature(this.rd.RDUserName, this.rd.SignalRClientId, this.rd.StaticClientGuid, this.signature, this.signatureRequest.UniqueStamp);
 			this._signalRService.saveSignature(rdSig);
 		}
 	}
@@ -88,8 +85,7 @@ export class SignatureComponent {
 				if (message === 'success') {
 					this.isSignatureCaptureStarted = false;
 					this.signature = '';
-					this.forname = '';
-					this.surname = '';
+					this.signatureRequest = new SignatureRequestDetail();
 					this.signaturePad.clearSignature();
 				} else {
 					this.signature = 'error!';
@@ -98,12 +94,10 @@ export class SignatureComponent {
 		})
 
 
-		this._signalRService.startSignatureCaptureMessage.subscribe((message: SignatureScreenDetail) => {
+		this._signalRService.startSignatureCaptureMessage.subscribe((message: SignatureRequestDetail) => {
 			this._ngZone.run(() => {
 				this.isSignatureCaptureStarted = true;
-				this.forname = message.Forename;
-				this.surname = message.Surname;
-				this.uniqueStampForSignatureRequest = message.UniqueStamp;
+				this.signatureRequest = message;
 			});
 		})
 	}

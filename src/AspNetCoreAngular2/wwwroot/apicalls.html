@@ -39,10 +39,12 @@
 			});
 
 			request.done(function (msg) {
-				var x = msg;
+				
 				alert('Done ->' + msg);
 				$('#sigResponse').empty();
 				$('#imageContainer').empty();
+				var rdSent = $('#rdUserName').val();
+				$('#rdUserNameGet').val(rdSent);
 			});
 
 			request.fail(function (jqXHR, textStatus) {

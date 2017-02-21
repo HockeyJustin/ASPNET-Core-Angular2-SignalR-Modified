@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ASPNETCoreAngular2Demo.Models
 {
-	public class SignatureScreenDetail
+	public class SignatureRequestDetail
 	{
 		public string RdUserName { get; set; }
 		public string Forename { get; set; }
