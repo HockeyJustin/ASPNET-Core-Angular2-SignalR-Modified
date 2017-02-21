@@ -1,6 +1,7 @@
 ﻿<div>
 	<div *ngIf="isRegistered && isSignatureCaptureStarted">
-		{{rd.RDUserName}} - Signature:
+		{{rd.RDUserName}} for <strong>{{forname}} {{surname}}</strong>
+		<br/>
 		<label for="rdSignature">Signature.</label>
 		<input name="rdSignature" type="text" class="form-control" [(ngModel)]="signature" />
 		<signaturepad (onSignatureComplete)="onSignatureComplete($event)"></signaturepad>

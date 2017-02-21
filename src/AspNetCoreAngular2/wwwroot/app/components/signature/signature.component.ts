@@ -4,6 +4,7 @@ import { RD } from '../../models/RD';
 import { RDSignature } from '../../models/RDSignature';
 import { Guid } from '../../models/Guid';
 import { SignaturePadComponent } from '../../components/signature-pad/signaturepad.component';
+import { SignatureScreenDetail } from '../../models/SignatureScreenDetail';
 
 @Component({
 	selector: 'signature',
@@ -18,6 +19,9 @@ export class SignatureComponent {
 	private isRegistered: Boolean;
 	private isSignatureCaptureStarted: Boolean;
 	public signature: string;
+
+	private forname: string;
+	private surname: string;
 
 	@ViewChild(SignaturePadComponent)
 	private signaturePad: SignaturePadComponent;
@@ -80,6 +84,8 @@ export class SignatureComponent {
 				if (message === 'success') {
 					this.isSignatureCaptureStarted = false;
 					this.signature = '';
+					this.forname = '';
+					this.surname = '';
 					this.signaturePad.clearSignature();
 				} else {
 					this.signature = 'error!';
@@ -88,9 +94,11 @@ export class SignatureComponent {
 		})
 
 
-		this._signalRService.startSignatureCaptureMessage.subscribe((message: string) => {
+		this._signalRService.startSignatureCaptureMessage.subscribe((message: SignatureScreenDetail) => {
 			this._ngZone.run(() => {
 				this.isSignatureCaptureStarted = true;
+				this.forname = message.Forename;
+				this.surname = message.Surname;
 			});
 		})
 	}

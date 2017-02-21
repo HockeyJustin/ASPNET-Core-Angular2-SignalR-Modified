@@ -3,6 +3,7 @@ import { CONFIGURATION } from '../shared/app.constants';
 import { ChatMessage } from '../models/ChatMessage';
 import { RD } from '../models/RD';
 import { RDSignature } from '../models/RDSignature';
+import { SignatureScreenDetail } from '../models/SignatureScreenDetail';
 
 declare var $: any;
 
@@ -19,7 +20,7 @@ export class SignalRService {
 	public messageReceived: EventEmitter<ChatMessage>;
 
 	public successFailMessage: EventEmitter<string>;
-	public startSignatureCaptureMessage: EventEmitter<string>;
+	public startSignatureCaptureMessage: EventEmitter<SignatureScreenDetail>;
 	public saveSignatureSuccessOrFailMessage: EventEmitter<string>;
 
     public newCpuValue: EventEmitter<Number>;
@@ -33,7 +34,7 @@ export class SignalRService {
 		this.messageReceived = new EventEmitter<ChatMessage>();
 
 		this.successFailMessage = new EventEmitter<string>();
-		this.startSignatureCaptureMessage = new EventEmitter<string>();
+		this.startSignatureCaptureMessage = new EventEmitter<SignatureScreenDetail>();
 		this.saveSignatureSuccessOrFailMessage = new EventEmitter<string>();
 
 		this.newCpuValue = new EventEmitter<Number>();
@@ -106,7 +107,7 @@ export class SignalRService {
 		});
 
 		// New!!!
-		this.proxy.on('StartSignatureCapture', (data: string) => {
+		this.proxy.on('StartSignatureCapture', (data: SignatureScreenDetail) => {
 			console.log('received in SignalRService: ' + JSON.stringify(data));
 			this.startSignatureCaptureMessage.emit(data);
 		})

@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+			integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+			crossorigin="anonymous"></script>
+
+
+	<script>
+
+		function startSignature() {
+			// This method will start a signature on the corresponding point.
+
+			var formData = $('#startSigForm').serializeArray().reduce(function (obj, item) {
+				obj[item.name] = item.value;
+				return obj;
+			}, {});
+
+			var request = $.ajax({
+				url: 'http://localhost:5000/api/Signature',
+				type: "POST",
+				data: JSON.stringify(formData),
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+			});
+
+			request.done(function (msg) {
+				var x = msg;
+				alert('done');
+				$('#sigResponse').empty();
+				$('#imageContainer').empty();
+			});
+
+			request.fail(function (jqXHR, textStatus) {
+				alert("Request failed: " + textStatus);
+			});
+		}
+
+
+
+		function getSignature() {
+			// This method will get a signature that has been submitted.
+
+			var getSigValue = $('#rdUserNameGet').val();
+
+			var request = $.ajax({
+				url: 'http://localhost:5000/api/Signature?rdUserName=' + getSigValue,
+				type: "GET",
+			});
+
+			request.done(function (returnVal) {
+				var x = returnVal;
+				var respDiv = $('#sigResponse');
+				var returnAsString = JSON.stringify(returnVal);
+				respDiv.html(returnAsString);
+
+				var image = new Image();
+				image.src = returnVal.signature;
+				respDiv.append(image);
+				//document.body.appendChild(image);
+
+				document.querySelector('#imageContainer').innerHTML = image.outerHTML;
+			});
+
+			request.fail(function (jqXHR, textStatus) {
+				alert("Request failed: " + textStatus);
+			});
+		}
+
+
+
+
+	</script>
+
+	<style>
+		.forminput {
+			min-width: 200px;
+		}
+	</style>
+
+</head>
+<body>
+
+
+	<h3>Start Signature</h3>
+	<form id="startSigForm">
+		<div>
+			<label class="formlabel" for="rdUserName">RdName:</label>
+		</div>
+		<input id="rdUserName" name="rdUserName" type="text" class="forminput" />
+		<div>
+			<label class="formlabel" for="Forename">Forename:</label>
+		</div>
+		<input id="Forename" name="Forename" type="text" class="forminput" />
+		<div>
+			<label class="formlabel" for="Surname">Surname:</label>
+		</div>
+		<input id="Surname" name="Surname" type="text" class="forminput" />
+		<br />
+		<button style="margin-top:12px;" type="button" onclick="startSignature()">Start Signature</button>
+
+	</form>
+
+
+	<h3>Get Signature</h3>
+	<form id="getSigForm">
+		<div>
+			<label class="formlabel" for="rdUserName">RdName:</label>
+		</div>
+		<input id="rdUserNameGet" name="rdUserName" type="text" class="forminput" />
+		<br />
+		<button style="margin-top:12px;" type="button" onclick="getSignature()">Get Signature</button>
+
+	</form>
+
+	<p>Result:</p>
+	<textarea id="sigResponse" cols="60" rows="10"></textarea>
+	<div id="imageContainer"></div>
+
+</body>
+</html>

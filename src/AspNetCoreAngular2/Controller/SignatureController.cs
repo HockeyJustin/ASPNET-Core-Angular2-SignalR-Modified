@@ -23,14 +23,14 @@ namespace ASPNETCoreAngular2Demo.Controller
 	public class SignatureController : Microsoft.AspNetCore.Mvc.Controller
 	{
 		private readonly IHubContext _coolMessageHubContext;
-		private IRDRepository _regdeskRepository;
+		private IRDRepository _rdRepository;
 		private IRDSignatureRepository _rdSignatureRepository;
 
 		public SignatureController(IConnectionManager connectionManager, ITimerService timerService, IRDRepository regdeskRepository, IRDSignatureRepository rdSignatureRepository)
 		{			
 			_coolMessageHubContext = connectionManager.GetHubContext<CoolMessagesHub>();
 			timerService.TimerElapsed += _timerService_TimerElapsed;
-			_regdeskRepository = regdeskRepository;
+			_rdRepository = regdeskRepository;
 			_rdSignatureRepository = rdSignatureRepository;
 		}
 		// GET: /<controller>/
@@ -43,7 +43,7 @@ namespace ASPNETCoreAngular2Demo.Controller
 				return BadRequest();
 			}
 
-			var matchingSignature = _rdSignatureRepository.Get(rdUserName);
+			Models.RDSignature matchingSignature = _rdSignatureRepository.Get(rdUserName);
 
 			if (matchingSignature != null)
 			{
@@ -57,28 +57,63 @@ namespace ASPNETCoreAngular2Demo.Controller
 
 
 		[HttpPost]
-		public IActionResult StartSignature(string rdUserName)
+		public IActionResult StartSignature([FromBody] SignatureScreenDetail signatureDetail)
 		{
 
-			if (String.IsNullOrWhiteSpace(rdUserName))
+			if (signatureDetail == null || String.IsNullOrWhiteSpace(signatureDetail.RdUserName))
 			{
 				return BadRequest();
 			}
 
-			var matchingDesk = _regdeskRepository.Get(rdUserName);
+			var matchingDesk = _rdRepository.Get(signatureDetail.RdUserName);
 
 			if (matchingDesk != null)
 			{
+				// check / clean data?
 				_coolMessageHubContext.Clients.Client(matchingDesk.SignalRClientId)
-					.StartSignatureCapture("GO!");
-				return Content("OK");
+					.StartSignatureCapture(signatureDetail);
+				return Json("OK");
 			}
 			else
 			{
-				return Content("No reg desk with that name. (username usually something like 'Reg Desk 1')");
+				return Json("No reg desk with that name. (username usually something like 'Reg Desk 1')");
 			}
 
 		}
+
+		public class SignatureScreenDetail
+		{
+			public string RdUserName { get; set; }
+			public string Forename { get; set; }
+			public string Surname { get; set; }
+		}
+
+
+
+
+		//[HttpPost]
+		//public IActionResult StartSignature(string rdUserName)
+		//{
+
+		//	if (String.IsNullOrWhiteSpace(rdUserName))
+		//	{
+		//		return BadRequest();
+		//	}
+
+		//	var matchingDesk = _regdeskRepository.Get(rdUserName);
+
+		//	if (matchingDesk != null)
+		//	{
+		//		_coolMessageHubContext.Clients.Client(matchingDesk.SignalRClientId)
+		//			.StartSignatureCapture("GO!");
+		//		return Content("OK");
+		//	}
+		//	else
+		//	{
+		//		return Content("No reg desk with that name. (username usually something like 'Reg Desk 1')");
+		//	}
+
+		//}
 
 
 

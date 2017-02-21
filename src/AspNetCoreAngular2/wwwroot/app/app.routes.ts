@@ -7,7 +7,7 @@ const appRoutes: Routes = [
 	{ path: 'dashboard', component: DashboardComponent },
 	{ path: 'signaturepage', component: SignaturePageComponent },
   { path: 'about', component: AboutComponent },
-  { path: '', redirectTo: '/signaturepage', pathMatch: 'full' },
+  { path: '', redirectTo: '/about', pathMatch: 'full' },
 ];
 
 export const routing = RouterModule.forRoot(appRoutes, { useHash: true });
