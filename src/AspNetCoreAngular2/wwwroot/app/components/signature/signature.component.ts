@@ -56,7 +56,20 @@ export class SignatureComponent {
 		}
 	}
 
-	public saveSignature() {
+	public clearSignature(): void {
+		this._ngZone.run(() => {
+			this.signature = '';
+			if (this.signaturePad != null) {
+				this.signaturePad.clearSignature();
+			}			
+		});
+	}
+
+	public clearSignatureRequest(): void {
+		this.signatureRequest = new SignatureRequestDetail();
+	}
+
+	public saveSignature(): void {
 		if (this.canSendMessage && this.isSignatureCaptureStarted) {
 			var rdSig = new RDSignature(this.rd.RDUserName, this.rd.SignalRClientId, this.rd.StaticClientGuid, this.signature, this.signatureRequest.UniqueStamp);
 			this._signalRService.saveSignature(rdSig);
@@ -83,23 +96,22 @@ export class SignatureComponent {
 		this._signalRService.saveSignatureSuccessOrFailMessage.subscribe((message: string) => {
 			this._ngZone.run(() => {
 				if (message === 'success') {
+					this.clearSignature();
 					this.isSignatureCaptureStarted = false;
-					this.signature = '';
-					this.signatureRequest = new SignatureRequestDetail();
-					this.signaturePad.clearSignature();
 				} else {
 					this.signature = 'error!';
 				}
 			});
-		})
+		});
 
 
-		this._signalRService.startSignatureCaptureMessage.subscribe((message: SignatureRequestDetail) => {
+		this._signalRService.startSignatureCaptureMessage.subscribe((sigRequest: SignatureRequestDetail) => {
 			this._ngZone.run(() => {
+				this.clearSignature();
 				this.isSignatureCaptureStarted = true;
-				this.signatureRequest = message;
+				this.signatureRequest = sigRequest;
 			});
-		})
+		});
 	}
 
 }

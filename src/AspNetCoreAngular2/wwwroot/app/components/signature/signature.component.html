@@ -6,7 +6,13 @@
 		<input name="rdSignature" type="text" class="form-control" [(ngModel)]="signature" />
 		<signaturepad (onSignatureComplete)="onSignatureComplete($event)"></signaturepad>
 
-		<button (click)="saveSignature()">Save</button>
+		<div>
+			<button style="display:inline-block; margin: 5px;" (click)="clearSignature()">Clear</button>
+			<button style="display:inline-block; margin: 5px;" (click)="saveSignature()">Save</button>
+		</div>
+
+		
+		
 	</div>
 	<div *ngIf="isRegistered && !isSignatureCaptureStarted">
 		{{rd.RDUserName}} - Registered 
