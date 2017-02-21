@@ -15,13 +15,17 @@ import { SignatureScreenDetail } from '../../models/SignatureScreenDetail';
 export class SignatureComponent {
 
 	public rd: RD;
+
+
 	public canSendMessage: Boolean;
 	private isRegistered: Boolean;
 	private isSignatureCaptureStarted: Boolean;
 	public signature: string;
+	public uniqueStampForSignatureRequest: string;
 
 	private forname: string;
 	private surname: string;
+
 
 	@ViewChild(SignaturePadComponent)
 	private signaturePad: SignaturePadComponent;
@@ -57,7 +61,7 @@ export class SignatureComponent {
 
 	public saveSignature() {
 		if (this.canSendMessage && this.isSignatureCaptureStarted) {
-			var rdSig = new RDSignature(this.rd.RDUserName, this.rd.SignalRClientId, this.rd.StaticClientGuid, this.signature);
+			var rdSig = new RDSignature(this.rd.RDUserName, this.rd.SignalRClientId, this.rd.StaticClientGuid, this.signature, this.uniqueStampForSignatureRequest);
 			this._signalRService.saveSignature(rdSig);
 		}
 	}
@@ -99,6 +103,7 @@ export class SignatureComponent {
 				this.isSignatureCaptureStarted = true;
 				this.forname = message.Forename;
 				this.surname = message.Surname;
+				this.uniqueStampForSignatureRequest = message.UniqueStamp;
 			});
 		})
 	}

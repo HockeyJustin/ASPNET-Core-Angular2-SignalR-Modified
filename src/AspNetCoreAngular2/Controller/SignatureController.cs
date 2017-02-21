@@ -37,14 +37,14 @@ namespace ASPNETCoreAngular2Demo.Controller
 		// GET: /<controller>/
 
 		[HttpGet]
-		public IActionResult GetLastSignature(string rdUserName)
+		public IActionResult GetLastSignature(string rdUserName, string uniqueStamp)
         {
 			if (String.IsNullOrWhiteSpace(rdUserName))
 			{
 				return BadRequest();
 			}
 
-			Models.RDSignature matchingSignature = _rdSignatureRepository.Get(rdUserName);
+			Models.RDSignature matchingSignature = _rdSignatureRepository.Get(rdUserName, uniqueStamp);
 
 			if (matchingSignature != null && !String.IsNullOrWhiteSpace(matchingSignature.Signature))
 			{
@@ -56,7 +56,7 @@ namespace ASPNETCoreAngular2Demo.Controller
 			}
 			else
 			{
-				return Content("RD not recognised.");
+				return Content("RD not recognised or no signature created yet.");
 			}
 		}
 

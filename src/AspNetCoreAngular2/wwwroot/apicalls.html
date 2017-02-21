@@ -10,6 +10,15 @@
 
 	<script>
 
+		var uniqueTs = '';
+
+		function newGuid() {
+			return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+				var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+				return v.toString(16);
+			});
+		}
+
 		function startSignature() {
 			// This method will start a signature on the corresponding point.
 
@@ -17,6 +26,9 @@
 				obj[item.name] = item.value;
 				return obj;
 			}, {});
+
+			uniqueTs = newGuid();
+			formData["UniqueStamp"] = uniqueTs;
 
 			var request = $.ajax({
 				url: 'http://localhost:5000/api/Signature',
@@ -46,7 +58,7 @@
 			var getSigValue = $('#rdUserNameGet').val();
 
 			var request = $.ajax({
-				url: 'http://localhost:5000/api/Signature?rdUserName=' + getSigValue,
+				url: 'http://localhost:5000/api/Signature?rdUserName=' + getSigValue + '&uniqueStamp=' + uniqueTs,
 				type: "GET",
 			});
 
@@ -103,7 +115,7 @@
 
 	</form>
 
-
+	<hr/>
 	<h3>Get Signature</h3>
 	<form id="getSigForm">
 		<div>

@@ -9,7 +9,7 @@ namespace ASPNETCoreAngular2Demo.Repositories
 	public interface IRDSignatureRepository
 	{
 		void Add(RDSignature regDesk);
-		RDSignature Get(string rdUserName);
+		RDSignature Get(string rdUserName, string uniqueStamp);
 		void ClearSignature(string rdUserName);
 	}
 
@@ -33,17 +33,18 @@ namespace ASPNETCoreAngular2Demo.Repositories
 
 		}
 
-		public RDSignature Get(string regDeskUserName)
+		public RDSignature Get(string rdUserName, string uniqueStamp)
 		{
-			return _regDesks.FirstOrDefault(i => i.RDUserName.ToLower() == regDeskUserName.ToLower());
+			return _regDesks.FirstOrDefault(i => i.RDUserName.ToLower() == rdUserName.ToLower() && i.UniqueStamp == uniqueStamp);
 		}
 
 		public void ClearSignature(string rdUserName)
 		{
-			var thisSignature = Get(rdUserName);
-			if(thisSignature != null)
+			var thisSignature = _regDesks.FirstOrDefault(i => i.RDUserName.ToLower() == rdUserName.ToLower());
+			if (thisSignature != null)
 			{
 				thisSignature.Signature = "";
+				thisSignature.UniqueStamp = "";
 			}
 		}
 

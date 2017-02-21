@@ -10,5 +10,6 @@ namespace ASPNETCoreAngular2Demo.Models
 		public string RdUserName { get; set; }
 		public string Forename { get; set; }
 		public string Surname { get; set; }
+		public string UniqueStamp { get; set; }
 	}
 }
