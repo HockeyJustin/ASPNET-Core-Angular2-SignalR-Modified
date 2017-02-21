@@ -10,6 +10,7 @@ namespace ASPNETCoreAngular2Demo.Repositories
 	{
 		void Add(RDSignature regDesk);
 		RDSignature Get(string rdUserName);
+		void ClearSignature(string rdUserName);
 	}
 
 
@@ -35,6 +36,15 @@ namespace ASPNETCoreAngular2Demo.Repositories
 		public RDSignature Get(string regDeskUserName)
 		{
 			return _regDesks.FirstOrDefault(i => i.RDUserName.ToLower() == regDeskUserName.ToLower());
+		}
+
+		public void ClearSignature(string rdUserName)
+		{
+			var thisSignature = Get(rdUserName);
+			if(thisSignature != null)
+			{
+				thisSignature.Signature = "";
+			}
 		}
 
 
