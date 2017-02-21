@@ -10,6 +10,7 @@ namespace ASPNETCoreAngular2Demo.Repositories
 	public interface IRDRepository
 	{
 		void Add(RD rd);
+		void Remove(RD rd);
 		RD Get(string rdUserName);
 	}
 
@@ -26,15 +27,26 @@ namespace ASPNETCoreAngular2Demo.Repositories
 
 		public void Add(RD regDesk)
 		{
-			var currentRow = _rds.FirstOrDefault(i => i.StaticClientGuid == regDesk.StaticClientGuid);
-			if (currentRow != null)
-			{
-				// Get rid of any old info (we might have a new connectionId or something!)
-				_rds.Remove(currentRow);
-			}
+			// remove an existing entry for that client
+			Remove(regDesk);
 
 			_rds.Add(regDesk);
 		}
+
+		/// <summary>
+		/// Uses the Unique id generated on the client to deregster
+		/// </summary>
+		/// <param name="regDesk"></param>
+		public void Remove(RD regDesk)
+		{
+			var currentRow = _rds.FirstOrDefault(i => i.StaticClientGuid == regDesk.StaticClientGuid);
+			if (currentRow != null)
+			{
+				_rds.Remove(currentRow);
+			}
+		}
+
+
 
 		public RD Get(string regDeskUserName)
 		{

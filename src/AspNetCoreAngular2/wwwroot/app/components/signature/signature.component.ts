@@ -56,6 +56,13 @@ export class SignatureComponent {
 		}
 	}
 
+	public deRegister(): void {
+		if (this.canSendMessage) {
+			this._signalRService.deRegister(this.rd);
+		}
+	}
+
+
 	public clearSignature(): void {
 		this._ngZone.run(() => {
 			this.signature = '';
@@ -90,6 +97,12 @@ export class SignatureComponent {
 				} else {
 					this.isRegistered = false;
 				}
+			});
+		});
+
+		this._signalRService.deRegistrationSuccessFailMessage.subscribe((message: string) => {
+			this._ngZone.run(() => {
+				this.isRegistered = false;
 			});
 		});
 

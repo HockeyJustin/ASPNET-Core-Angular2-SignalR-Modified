@@ -44,6 +44,12 @@ namespace ASPNETCoreAngular2Demo.Hubs
 			Clients.Client(regDesk.SignalRClientId).RegistrationSuccessOrFail("success");
 		}
 
+		public void DeRegister(RD regDesk)
+		{
+			_regdeskRepository.Remove(regDesk);
+			Clients.Client(regDesk.SignalRClientId).DeRegistrationSuccessOrFail("success");
+		}
+
 
 		public void SaveSignature(RDSignature regDeskSignature)
 		{

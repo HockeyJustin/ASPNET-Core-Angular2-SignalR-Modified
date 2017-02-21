@@ -20,6 +20,7 @@ export class SignalRService {
 	public messageReceived: EventEmitter<ChatMessage>;
 
 	public successFailMessage: EventEmitter<string>;
+	public deRegistrationSuccessFailMessage: EventEmitter<string>;
 	public startSignatureCaptureMessage: EventEmitter<SignatureRequestDetail>;
 	public saveSignatureSuccessOrFailMessage: EventEmitter<string>;
 
@@ -34,6 +35,7 @@ export class SignalRService {
 		this.messageReceived = new EventEmitter<ChatMessage>();
 
 		this.successFailMessage = new EventEmitter<string>();
+		this.deRegistrationSuccessFailMessage = new EventEmitter<string>();
 		this.startSignatureCaptureMessage = new EventEmitter<SignatureRequestDetail>();
 		this.saveSignatureSuccessOrFailMessage = new EventEmitter<string>();
 
@@ -58,6 +60,11 @@ export class SignalRService {
 	public sendRegistrationId(rd: RD) {
 		rd.SignalRClientId = this.connectionId;
 		this.proxy.invoke('SendRegistrationId', rd);
+	}
+
+	// New 
+	public deRegister(rd: RD) {
+		this.proxy.invoke('DeRegister', rd);
 	}
 
 	// New
@@ -104,6 +111,11 @@ export class SignalRService {
 		this.proxy.on('RegistrationSuccessOrFail', (data: string) => {
 			console.log('received in SignalRService: ' + JSON.stringify(data));
 			this.successFailMessage.emit(data);
+		});
+
+		this.proxy.on('DeRegistrationSuccessOrFail', (data: string) => {
+			console.log('received in SignalRService: ' + JSON.stringify(data));
+			this.deRegistrationSuccessFailMessage.emit(data);
 		});
 
 		// New!!!

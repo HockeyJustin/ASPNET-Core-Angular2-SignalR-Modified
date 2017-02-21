@@ -1,7 +1,7 @@
 ﻿<div>
 	<div *ngIf="isRegistered && isSignatureCaptureStarted">
-		{{rd.RDUserName}} for <strong>{{signatureRequest.forname}} {{signatureRequest.surname}}</strong>
-		<br/>
+		{{rd.RDUserName}} for <strong>{{signatureRequest.Forename}} {{signatureRequest.Surname}}</strong>
+		<br />
 		<label for="rdSignature">Signature.</label>
 		<input name="rdSignature" type="text" class="form-control" [(ngModel)]="signature" />
 		<signaturepad (onSignatureComplete)="onSignatureComplete($event)"></signaturepad>
@@ -11,18 +11,19 @@
 			<button style="display:inline-block; margin: 5px;" (click)="saveSignature()">Save</button>
 		</div>
 
-		
-		
 	</div>
 	<div *ngIf="isRegistered && !isSignatureCaptureStarted">
-		{{rd.RDUserName}} - Registered 
+		{{rd.RDUserName}} - Registered
+		<div>
+			<button style="display:inline-block; margin: 5px;" (click)="deRegister()">Deregister</button>
+		</div>
 	</div>
 	<div *ngIf="!isRegistered">
 		<form (ngSubmit)="sendRegistration()">
 			<div class="form-group">
 				<label for="RDUserName">Desk ID.</label>
-				<input type="text" class="form-control" 
-					   id="RDUserName" name="RDUserName" placeholder="Desk 001" 
+				<input type="text" class="form-control"
+					   id="RDUserName" name="RDUserName" placeholder="Desk 001"
 					   [(ngModel)]="rd.RDUserName">
 			</div>
 			<button type="submit" class="btn btn-default" [disabled]="!canSendMessage">Register</button>
